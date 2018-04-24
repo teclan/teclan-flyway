@@ -36,6 +36,10 @@ public class Database {
         this.dataSource = dataSource;
     }
 
+	public void initDb() {
+		initDb(dataSource);
+	}
+
     public void initDb(DataSource dataSource) {
 
         String key = generateKeyForPool(dataSource);
@@ -49,7 +53,7 @@ public class Database {
 
         Flyway flyway = new Flyway();
         flyway.setDataSource(hikariDataSource);
-
+		flyway.setBaselineOnMigrate(true);
         if (migrateClean) {
             flyway.clean();
         }
@@ -89,7 +93,14 @@ public class Database {
     }
 
     public void openDatabase() {
-        new DB(name).open(DATA_SOURCES.get(generateKeyForPool(dataSource)));
+
+		String key = generateKeyForPool(dataSource);
+
+		if (!DATA_SOURCES.containsKey(key)) {
+			DATA_SOURCES.put(key, generateHikariDataSource(dataSource));
+		}
+
+		new DB(name).open(DATA_SOURCES.get(key));
     }
 
     public void closeDatabase() {

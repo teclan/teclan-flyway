@@ -37,6 +37,22 @@ public class DataSource {
 
     }
 
+	public DataSource(String type, String driverClass, String url, String schema, String user, String password) {
+		this.type = type;
+		this.schema = schema;
+		this.user = user;
+		this.password = password;
+		this.driverClass = driverClass;
+		this.url = url;
+	}
+
+	public DataSource(String driverClass, String url, String user, String password) {
+		this.user = user;
+		this.password = password;
+		this.driverClass = driverClass;
+		this.url = url;
+	}
+
     public String getType() {
         return type;
     }
