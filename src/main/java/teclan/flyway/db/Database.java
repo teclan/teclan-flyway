@@ -22,7 +22,7 @@ public class Database {
     private String     name;
     private DataSource dataSource;
 
-    private boolean migrateClean = false;
+	private static boolean migrateClean = false;
 
     // 连接池
     private static Map<String, HikariDataSource> DATA_SOURCES = new HashMap<String, HikariDataSource>();
@@ -40,7 +40,7 @@ public class Database {
 		initDb(dataSource);
 	}
 
-    public void initDb(DataSource dataSource) {
+	public static void initDb(DataSource dataSource) throws FlywayException {
 
         String key = generateKeyForPool(dataSource);
 
@@ -67,7 +67,7 @@ public class Database {
         }
     }
 
-    private String generateKeyForPool(DataSource dataSource) {
+	private static String generateKeyForPool(DataSource dataSource) {
         StringBuffer appender = new StringBuffer();
 
         appender.append(dataSource.getType());
@@ -80,7 +80,7 @@ public class Database {
         return Strings.toHexDigest(appender.toString(), "MD5");
     }
 
-    private HikariDataSource generateHikariDataSource(DataSource dataSource) {
+	private static HikariDataSource generateHikariDataSource(DataSource dataSource) {
 
         HikariConfig config = new HikariConfig();
 
