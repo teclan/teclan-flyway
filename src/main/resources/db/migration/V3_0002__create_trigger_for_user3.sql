@@ -1,1 +1,0 @@
-insert into imm_almtype values ('10','测试','xx');

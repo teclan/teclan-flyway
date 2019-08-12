@@ -1,1 +1,0 @@
-create or replace view  view1 as select * from imm_almtype;

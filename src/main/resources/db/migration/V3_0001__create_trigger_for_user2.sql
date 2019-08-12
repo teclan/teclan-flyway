@@ -1,1 +1,0 @@
-ALTER TABLE imm_almtype ADD c1 VARCHAR(20) COMMENT '测试1';
