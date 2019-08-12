@@ -127,6 +127,22 @@ public class Database {
         new DB(name).close();
     }
 
+
+    public void openDatabase(String name) {
+
+        String key = generateKeyForPool(dataSource);
+
+        if (!DATA_SOURCES.containsKey(key)) {
+            DATA_SOURCES.put(key, generateHikariDataSource(dataSource));
+        }
+
+        new DB(name).open(DATA_SOURCES.get(key));
+    }
+
+    public void closeDatabase(String name) {
+        new DB(name).close();
+    }
+
     /**
      * Clean is a great help in development and test. It will effectively give
      * you a fresh start, by wiping your configured schemas completely clean.
