@@ -23,7 +23,7 @@ public abstract class AbstractFlywayFactory {
 
 
 
-    protected void flyway(){
+    public void flyway(){
         DataSource dataSource = new DataSource(getDriver(),getUrl(),getUser(),getPassword());
         Database.initDb(dataSource);
     }
