@@ -23,6 +23,7 @@ public class Database {
     private DataSource dataSource;
 
 	private static boolean migrateClean = false;
+	private static String[] locations=null;
 
     // 连接池
     private static Map<String, HikariDataSource> DATA_SOURCES = new HashMap<String, HikariDataSource>();
@@ -47,24 +48,12 @@ public class Database {
         HikariDataSource hikariDataSource = generateHikariDataSource(
                 dataSource);
 
+
         if (!DATA_SOURCES.containsKey(key)) {
             DATA_SOURCES.put(key, hikariDataSource);
         }
 
-        Flyway flyway = new Flyway();
-        flyway.setDataSource(hikariDataSource);
-		flyway.setBaselineOnMigrate(true);
-        if (migrateClean) {
-            flyway.clean();
-        }
-
-        try {
-            flyway.migrate();
-        } catch (FlywayException e) {
-            LOGGER.error(
-                    "数据库迁移检验失败,表结构可能已经修改,建议迁移之前将 migrateClean 设为 true,如果是生产环境请联系DBA确认后重试 !");
-            throw e;
-        }
+        initDb(hikariDataSource);
     }
 
 
@@ -73,6 +62,12 @@ public class Database {
         Flyway flyway = new Flyway();
         flyway.setDataSource(dataSource);
         flyway.setBaselineOnMigrate(true);
+
+        if(locations!=null){
+            flyway.setLocations(locations);
+
+        }
+
         if (migrateClean) {
             flyway.clean();
         }
@@ -152,8 +147,12 @@ public class Database {
      * 
      * @param migrateClean
      */
-    public void setMigrateClean(boolean migrateClean) {
+    public static void setMigrateClean(boolean migrateClean) {
         Database.migrateClean = migrateClean;
+    }
+
+    public static void setLocations(String[] locations) {
+        Database.locations = locations;
     }
 
 }

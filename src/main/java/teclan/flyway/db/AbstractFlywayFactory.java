@@ -28,4 +28,14 @@ public abstract class AbstractFlywayFactory {
         Database.initDb(dataSource);
     }
 
+
+    public void flyway(String[] locations){
+        DataSource dataSource = new DataSource(getDriver(),getUrl(),getUser(),getPassword());
+        Database.initDb(dataSource);
+        Database.setLocations(locations);
+    }
+
+
+
+
 }
